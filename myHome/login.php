@@ -1,3 +1,17 @@
+<?php
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+	$mysqli = require __DIR__ . "/database.php";
+	$sql = sprintf("SELECT * FROM users WHERE email = '%s'",
+		$mysqli->real_escape_string($_POST["email"]));
+	$result = $mysqli->query($sql);
+	$user = $result->fetch_assoc();
+	if ($user) {
+		if (password_verify($_POST["password"], $user["password_hash"])) {
+			die("Login succesfull");
+		}
+		}
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,9 +70,9 @@
 
         <section class="login-form">
             <h2>Login to Your Account</h2>
-            <form action="/login" method="POST">
-                <label for="username">Username or Email</label>
-                <input type="text" id="username" name="username" required>
+            <form method="POST">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
 
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
