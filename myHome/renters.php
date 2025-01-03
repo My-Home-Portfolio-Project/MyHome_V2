@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,6 +84,9 @@
             <img src="home.png" alt="MyHome Logo">
             MyHome
         </a>
+<?php if (isset($_SESSION["user_id"])): ?>
+<p> Congratulations you are logged in.</p>
+<?php endif; ?>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -90,7 +96,7 @@
                     <a href="lansdlords2.html" class="btn btn-outline-primary mr-2">Be a Landlord</a>
                 </li>
                 <li class="nav-item">
-                    <a href="index.html" class="btn btn-outline-danger">Logout</a>
+                    <a href="logout.php" class="btn btn-outline-danger">Logout</a>
                 </li>
             </ul>
         </div>

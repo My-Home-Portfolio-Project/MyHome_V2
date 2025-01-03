@@ -1,7 +1,7 @@
 <?php
  
  $host = "127.0.0.1";
- $dbname = "users_db";
+ $dbname = "myhome";
  $username = "root";
  $password = "FlavianLeonar2003$";
 

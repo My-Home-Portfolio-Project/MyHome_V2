@@ -1,4 +1,5 @@
 <?php
+$is_invalid = false;
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 	$mysqli = require __DIR__ . "/database.php";
 	$sql = sprintf("SELECT * FROM users WHERE email = '%s'",
@@ -7,9 +8,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 	$user = $result->fetch_assoc();
 	if ($user) {
 		if (password_verify($_POST["password"], $user["password_hash"])) {
-			die("Login succesfull");
+			session_start();
+			session_regenerate_id();
+			$_SESSION["user_id"] = $user["id"];
+			header("Location: renters.php");
+			exit;
 		}
 		}
+
+$is_invalid = true;
 }
 ?>
 <!DOCTYPE html>
@@ -63,6 +70,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="login-container">
         <header>
             <h1>Real Estate Connect</h1>
+<?php if ($is_invalid): ?>
+<em>login details not valid</em>
+<?php endif; ?> 
             <nav>
                 <a href="/">Home</a> | <a href="/about">About</a> | <a href="/+254711316745">Contact</a>
             </nav>
