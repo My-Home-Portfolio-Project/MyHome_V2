@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landlord Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        header {
+            background: #35424a;
+            color: #ffffff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        form {
+            background: #ffffff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        form label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        form input, form textarea, form button {
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        form input[type="file"] {
+            padding: 5px;
+        }
+        form button {
+            background-color: #35424a;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Landlord Registration</h1>
+    </header>
+    <div class="container">
+        <form action="submit-owner.php" method="POST" enctype="multipart/form-data">
+            <label for="name">Landlord Name:</label>
+            <input type="text" id="name" name="name" required placeholder="Enter landlord's name">
+
+            <label for="apartmentname">Apartment Name:</label>
+            <input type="text" id="apartmentname" name="apartmentname" required placeholder="Enter apartment name">
+
+            <label for="amount">Apartment Rent Amount (in USD):</label>
+            <input type="number" id="amount" name="amount" required placeholder="Enter rent amount">
+
+            <label for="ownercomments">Comments:</label>
+            <textarea id="ownercomments" name="ownercomments" rows="5" placeholder="Enter any additional comments"></textarea>
+
+            <label for="propertyPictures">Upload Apartment Images:</label>
+            <input type="file" id="propertyPictures" name="propertyPictures[]" accept="image/*" multiple>
+
+            <label for="propertyVideos">Upload Apartment Video:</label>
+            <input type="file" id="propertyVideos" name="propertyVideos[]" accept="video/*" multiple>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
+
