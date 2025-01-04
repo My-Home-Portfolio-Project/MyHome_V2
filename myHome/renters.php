@@ -93,7 +93,7 @@ session_start();
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="lansdlords2.html" class="btn btn-outline-primary mr-2">Be a Landlord</a>
+                    <a href="landlords2.html" class="btn btn-outline-primary mr-2">Be a Landlord</a>
                 </li>
                 <li class="nav-item">
                     <a href="logout.php" class="btn btn-outline-danger">Logout</a>
