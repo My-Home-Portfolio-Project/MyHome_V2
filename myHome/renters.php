@@ -216,38 +216,6 @@ if ($result->num_rows > 0) {
         </div>
 
         <!-- Landlords List Section -->
-	<div class="row">
-    <?php if ($result->num_rows > 0): ?>
-        <?php while($row = $result->fetch_assoc()): ?>
-            <div class="col-md-6 mb-4">
-                <div class="bg-white shadow-md rounded-lg p-6 animated-border">
-                    <h2 class="text-xl font-semibold mb-4"><?php echo htmlspecialchars($row['landlord_name']); ?></h2>
-                    <p>Landlord ID: <?php echo htmlspecialchars($row['landlord_id']); ?></p>
-                    <p>Apartment Name: <?php echo htmlspecialchars($row['apartment_name']); ?></p>
-                    <p>Apartment Amount: $<?php echo htmlspecialchars($row['apartment_amount']); ?></p>
-                    <p>Comments: <?php echo htmlspecialchars($row['comments']); ?></p>
-                    <div class="media-box">
-                        <?php if (!empty($row['property_video'])): ?>
-                            <video controls>
-                                <source src="<?php echo htmlspecialchars($row['property_video']); ?>" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                        <?php endif; ?>
-                        <?php if (!empty($row['property_image'])): ?>
-                            <img src="<?php echo htmlspecialchars($row['property_image']); ?>" alt="Property Image" />
-                        <?php else: ?>
-                            <p>No image available for this property.</p>
-                        <?php endif; ?>
-                    </div>
-                    <p class="price-animation">$<?php echo htmlspecialchars($row['apartment_amount']); ?></p> <!-- Display apartment amount with animation -->
-                </div>
-            </div>
-        <?php endwhile; ?>
-    <?php else: ?>
-        <div class="col-12">
-            <p>No landlords found.</p>
-        </div>
-    <?php endif
         <!-- Navigation Buttons -->
         <div class="text-center">
             <a href="previous_page.php" class="btn btn-primary">Previous</a>
