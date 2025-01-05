@@ -215,7 +215,6 @@ if ($result->num_rows > 0) {
             </div>
         </div>
 
-        <!-- Landlords List Section -->
         <!-- Navigation Buttons -->
         <div class="text-center">
             <a href="previous_page.php" class="btn btn-primary">Previous</a>
