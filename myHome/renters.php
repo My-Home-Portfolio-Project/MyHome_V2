@@ -1,9 +1,9 @@
 <?php
 // Database connection
-$servername = "localhost"; // Change if your database server is different
-$username = "root"; // Replace with your database username
-$password = "FlavianLeonar2003$"; // Replace with your database password
-$dbname = "myhome"; // Database name
+$servername = "localhost";
+$username = "root";
+$password = "FlavianLeonar2003$";
+$dbname = "myhome";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -13,30 +13,40 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch landlords from the database
-$sql = "SELECT landlord_id, landlord_name, user_id, apartment_name, apartment_amount, comments, property_video, property_image FROM landlords";
+// Get the current row index from the query string, default to the first row
+$currentRow = isset($_GET['row']) ? intval($_GET['row']) : 1;
+
+// Fetch the total number of rows in the landlords table
+$totalRowsQuery = "SELECT COUNT(*) as count FROM landlords";
+$totalRowsResult = $conn->query($totalRowsQuery);
+$totalRows = $totalRowsResult->fetch_assoc()['count'];
+
+// Ensure the current row index is within valid range
+if ($currentRow < 1) {
+    $currentRow = 1;
+} elseif ($currentRow > $totalRows) {
+    $currentRow = $totalRows;
+}
+
+// Fetch the landlord data for the current row
+$sql = "SELECT landlord_id, landlord_name, user_id, apartment_name, apartment_amount, comments, property_video, property_image 
+        FROM landlords LIMIT 1 OFFSET " . ($currentRow - 1);
 $result = $conn->query($sql);
 
-// Initialize variables to hold landlord's name, apartment name, comments, and video
-$landlordName = '';
-$apartmentName = '';
-$comments = '';
-$propertyVideo = '';
-$apartmentAmount = '';
-$propertyImage = '';
+// Initialize variables to hold landlord data
+$landlordName = $apartmentName = $comments = $propertyVideo = $apartmentAmount = $propertyImage = '';
 
 if ($result->num_rows > 0) {
-    // Fetch the first landlord's data
+    // Fetch the current landlord's data
     $row = $result->fetch_assoc();
-    $landlordName = htmlspecialchars($row['landlord_name']); // Store the landlord's name
-    $apartmentName = htmlspecialchars($row['apartment_name']); // Store the apartment name
-    $comments = htmlspecialchars($row['comments']); // Store the comments
-    $propertyVideo = htmlspecialchars($row['property_video']); // Store the property video
-    $apartmentAmount = htmlspecialchars($row['apartment_amount']); // Store the apartment amount
-    $propertyImage = htmlspecialchars($row['property_image']); // Store the property image
+    $landlordName = htmlspecialchars($row['landlord_name']);
+    $apartmentName = htmlspecialchars($row['apartment_name']);
+    $comments = htmlspecialchars($row['comments']);
+    $propertyVideo = htmlspecialchars($row['property_video']);
+    $apartmentAmount = htmlspecialchars($row['apartment_amount']);
+    $propertyImage = htmlspecialchars($row['property_image']);
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,7 +56,7 @@ if ($result->num_rows > 0) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Your existing CSS styles */
+        /* Background Animation */
         @keyframes backgroundAnimation {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -57,174 +67,209 @@ if ($result->num_rows > 0) {
             background: linear-gradient(-45deg, #42a5f5, #ab47bc, #ff7043, #66bb6a);
             background-size: 400% 400%;
             animation: backgroundAnimation 15s ease infinite;
+            min-height: 100vh;
+            padding: 20px 0;
         }
 
-        .navbar, footer {
-            background-color: rgba(248, 249, 250, 0.8) !important;
+        /* Container Animation */
+        .animated-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .animated-border {
-            position: relative;
-            border: 3px solid transparent;
-            border-radius: 10px;
-            background-clip: padding-box, border-box;
-            background-origin: padding-box, border-box;
+        .animated-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
         }
 
-        .animated-border::before {
-            content: '';
-            position: absolute;
-            top: -3px;
-            left: -3px;
-            right: -3px;
-            bottom: -3px;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45aaf2, #ff6b6b);
-            background-size: 400% 400%;
-            animation: backgroundAnimation 10s ease infinite;
-            border-radius: 13px;
-            z-index: -1;
+        /* Title Animation */
+        .animated-title {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #42a5f5, #ab47bc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: titleGradient 5s ease infinite;
         }
 
-        .animated-footer {
-            background: linear-gradient(-45deg, #42a5f5, #ab47bc, #ff7043, #66bb6a);
-            background-size: 400% 400%;
-            animation: backgroundAnimation 15s ease infinite;
-            color: white;
+        @keyframes titleGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .animated-footer p {
-            margin: 0;
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .navbar-brand img {
-            height: 40px;
-            width: auto;
-        }
-
-        /* Set dimensions for video and image */
-        .media-box {
-            width: 100%;
-            height: 300px; /* Set a fixed height for both video and image */
-            overflow: hidden;
-            position: relative;
-        }
-
-        .media-box video,
-        .media-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Ensures the video and image cover the entire box without distortion */
-        }
-
-        /* Animation for apartment amount */
+        /* Price Animation */
         .price-animation {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
-            color: #ff6b6b;
             opacity: 0;
-            animation: fadeIn 1s forwards;
-            animation-delay: 0.5s; /* Delay before the animation starts */
+            animation: fadeInUp 1s forwards;
+            color: #ff6b6b;
         }
 
-        @keyframes fadeIn {
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
+                transform: translateY(0);
             }
+        }
+
+        /* Media Container Styles */
+        .media-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .media-box {
+            flex: 1;
+            min-width: 300px;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .media-box:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .media-box img,
+        .media-box video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        /* Comments Section Animation */
+        .comments-section {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            color: white;
+            opacity: 0;
+            animation: slideIn 1s forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Navigation Buttons Animation */
+        .nav-buttons {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .btn-animated {
+            background: linear-gradient(45deg, #42a5f5, #ab47bc);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .btn-animated:hover:not(.disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-animated.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Landlord Info Animation */
+        .landlord-info {
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            background: white;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a href="#" class="navbar-brand">
-            <img src="home.png" alt="MyHome Logo">
-            MyHome
-        </a>
-        <?php if (isset($_SESSION["user_id"])): ?>
-            <p> Congratulations you are logged in.</p>
-        <?php endif; ?>
-        <button class ="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a href="landlords2.php" class="btn btn-outline-primary mr-2">Be a Landlord</a>
-                </li>
-                <li class="nav-item">
-                    <a href="logout.php" class="btn btn-outline-danger">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <div class="container">
+        <div class="animated-container">
+            <h1 class="animated-title mb-4"><?php echo $apartmentName; ?></h1>
+            
+            <div class="landlord-info">
+                <h3><i class="fas fa-user-circle"></i> <?php echo $landlordName; ?></h3>
+                <div class="price-animation mt-3">$<?php echo $apartmentAmount; ?></div>
+            </div>
 
-    <div class="container-fluid px-4 py-8">
-        <!-- Renters Profile Section -->
-        <div class="row">
-            <div class="col-md-8">
-                <div class="bg-white shadow-lg rounded-lg p-6 mb-8 animated-border">
-                    <div class="d-flex align-items-center mb-6">
-                        <div class="w-24 h-24 rounded-full mr-4">
-                            <img src="/api/placeholder/120/120" alt="Landlord's Image" class="w-20 h-20 rounded-circle">
-                        </div>
-                        <div>
-                            <h1 class="text-2xl font-bold text-dark"><?php echo $landlordName; ?></h1>
-                            <p class="text-muted"><?php echo $apartmentName; ?></p>
-                            <p class="price-animation">$<?php echo $apartmentAmount; ?></p> <!-- Display apartment amount with animation -->
-                        </div>
-                    </div>
+            <div class="comments-section">
+                <h4><i class="fas fa-comments"></i> About this Property</h4>
+                <p><?php echo $comments; ?></p>
+            </div>
+            
+            <!-- Media Container -->
+            <div class="media-container">
+                <div class="media-box">
+                    <?php if (!empty($propertyImage)): ?>
+                        <img src="<?php echo $propertyImage; ?>" alt="Property Image">
+                    <?php else: ?>
+                        <div class="no-media">No image available for this property.</div>
+                    <?php endif; ?>
+                </div>
 
-                    <!-- Renter's Message -->
-                    <div class="bg-info text-white p-4 rounded-lg mb-6">
-                        <p><?php echo $comments; ?></p>
-                    </div>
-                    <div class="media-box">
-                        <?php if (!empty($propertyImage)): ?>
-                            <img src="<?php echo $propertyImage; ?>" alt="Property Image" />
-                        <?php else: ?>
-                            <p>No image available for this property.</p>
-                        <?php endif; ?>
-                    </div>
+                <div class="media-box">
+                    <?php if (!empty($propertyVideo)): ?>
+                        <video controls>
+                            <source src="<?php echo $propertyVideo; ?>" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    <?php else: ?>
+                        <div class="no-media">No video available for this property.</div>
+                    <?php endif; ?>
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="bg-white shadow-lg rounded-lg p-6 mb-8 animated-border">
-                    <h2 class="text-xl font-semibold mb-4">Property Video</h2>
-                    <div class="media-box">
-                        <?php if (!empty($propertyVideo)): ?>
-                            <video controls>
-                                <source src="<?php echo $propertyVideo; ?>" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                        <?php else: ?>
-                            <p>No video available for this property.</p>
-                        <?php endif; ?>
-                    </div>
-                </div>
+            <!-- Navigation Buttons -->
+            <div class="nav-buttons">
+                <a href="?row=<?php echo max($currentRow - 1, 1); ?>" 
+                   class="btn-animated <?php echo $currentRow <= 1 ? 'disabled' : ''; ?>">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </a>
+                <a href="?row=<?php echo min($currentRow + 1, $totalRows); ?>" 
+                   class="btn-animated <?php echo $currentRow >= $totalRows ? 'disabled' : ''; ?>">
+                    Next <i class="fas fa-chevron-right"></i>
+                </a>
             </div>
-        </div>
-
-        <!-- Navigation Buttons -->
-        <div class="text-center">
-            <a href="previous_page.php" class="btn btn-primary">Previous</a>
-            <a href="next_page.php" class="btn btn-primary">Next</a>
         </div>
     </div>
 
-    <footer class="animated-footer text-center py-4">
-        <p>&copy; 2023 MyHome. All rights reserved.</p>
-    </footer>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
