@@ -221,11 +221,9 @@
 
     <div class="container">
         <div class="form-container animated-border hover-glow">
-                <!-- Owner Information Section -->
-            <h2 class="mb-4 animate-fade-in">Owner Information</h2>
             <h2 class="mb-4 animate-fade-in">Owner Information</h2>
             <form id="ownerForm" action="/submit-owner.php" method="POST" enctype="multipart/form-data">
-            <form id="ownerForm" action="/submit-owner" method="POST" enctype="multipart/form-data">
+                <!-- Owner Information Section -->
                 <div class="section-card delay-100">
                     <div class="row">
                         <div class="col-md-6">
@@ -361,3 +359,5 @@
             handleFiles(this, 'pictureList', 'picturePreview');
         });
     </script>
+</body>
+</html>
