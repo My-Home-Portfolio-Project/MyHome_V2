@@ -179,7 +179,7 @@ if ($result->num_rows > 0) {
                         </div>
                         <div>
                             <h1 class="text-2xl font-bold text-dark"><?php echo $landlordName; ?></h1>
-                            <p class="text-muted">Looking for a <?php echo $apartmentName; ?></p>
+                            <p class="text-muted"><?php echo $apartmentName; ?></p>
                             <p class="price-animation">$<?php echo $apartmentAmount; ?></p> <!-- Display apartment amount with animation -->
                         </div>
                     </div>
