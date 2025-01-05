@@ -71,6 +71,39 @@ if ($result->num_rows > 0) {
             padding: 20px 0;
         }
 
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-btn {
+            background: linear-gradient(45deg, #42a5f5, #ab47bc);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            margin: 0 10px;
+            display: inline-block;
+        }
+
+        .header-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+            text-decoration: none;
+        }
+
+        .header-btn.logout {
+            background: linear-gradient(45deg, #ff7043, #ff5252);
+        }
+
         /* Container Animation */
         .animated-container {
             background: rgba(255, 255, 255, 0.9);
@@ -220,6 +253,21 @@ if ($result->num_rows > 0) {
     </style>
 </head>
 <body>
+    <!-- Header -->
+    <div class="container">
+        <div class="header">
+            <div class="d-flex justify-content-end align-items-center">
+                <a href="landlords2.php" class="header-btn">
+                    <i class="fas fa-exchange-alt"></i> Switch to Landlord
+                </a>
+                <a href="logout.php" class="header-btn logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
     <div class="container">
         <div class="animated-container">
             <h1 class="animated-title mb-4"><?php echo $apartmentName; ?></h1>
@@ -234,7 +282,6 @@ if ($result->num_rows > 0) {
                 <p><?php echo $comments; ?></p>
             </div>
             
-            <!-- Media Container -->
             <div class="media-container">
                 <div class="media-box">
                     <?php if (!empty($propertyImage)): ?>
@@ -256,7 +303,6 @@ if ($result->num_rows > 0) {
                 </div>
             </div>
 
-            <!-- Navigation Buttons -->
             <div class="nav-buttons">
                 <a href="?row=<?php echo max($currentRow - 1, 1); ?>" 
                    class="btn-animated <?php echo $currentRow <= 1 ? 'disabled' : ''; ?>">
