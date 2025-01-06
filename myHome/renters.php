@@ -78,6 +78,16 @@ if ($result->num_rows > 0) {
             margin-bottom: 30px;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-between; /* Space between title and buttons */
+            align-items: center; /* Center items vertically */
+        }
+
+        .header-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #42a5f5; /* Color for the title */
+            margin-left: 20px; /* Add some left margin */
         }
 
         .header-btn {
@@ -90,7 +100,7 @@ if ($result->num_rows > 0) {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             text-decoration: none;
             margin: 0 10px;
-            display: inline-block;
+            display: inline -block;
         }
 
         .header-btn:hover {
@@ -234,7 +244,7 @@ if ($result->num_rows > 0) {
         .btn-animated.disabled {
             opacity: 0.6;
             cursor: not-allowed;
-        }
+ }
 
         /* Landlord Info Animation */
         .landlord-info {
@@ -244,7 +254,12 @@ if ($result->num_rows > 0) {
             background: white;
             opacity: 0;
             animation: fadeIn 1s forwards;
-        }
+	}
+	.logo {
+        width: 50px; /* Adjust width as needed */
+        height: auto;
+        margin-left: 20px; /* Adjust margin as needed */
+    }
 
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -256,6 +271,8 @@ if ($result->num_rows > 0) {
     <!-- Header -->
     <div class="container">
         <div class="header">
+	    <img src="/static/home.png" alt="myHome Logo" style="width: 50px; height: auto; margin-left: 20px;">
+            <h1 class="header-title">MyHome</h1>
             <div class="d-flex justify-content-end align-items-center">
                 <a href="landlords2.php" class="header-btn">
                     <i class="fas fa-exchange-alt"></i> Switch to Landlord

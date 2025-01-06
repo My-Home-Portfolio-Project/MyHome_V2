@@ -209,11 +209,11 @@
             <ul class="navbar-nav ml-auto">
                 <!-- Switch to Tenant Button -->
                 <li class="nav-item">
-                    <a href="renters.html" class="btn btn-outline-primary mr-2">Switch to Tenant</a>
+                    <a href="renters.php" class="btn btn-outline-primary mr-2">Switch to Tenant</a>
                 </li>
                 <!-- Logout Button -->
                 <li class="nav-item">
-                    <a href="index.html" class="btn btn-outline-danger">Logout</a>
+                    <a href="index.php" class="btn btn-outline-danger">Logout</a>
                 </li>
             </ul>
         </div>
