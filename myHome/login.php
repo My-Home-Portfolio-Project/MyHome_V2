@@ -357,7 +357,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </form>
             
             <p><a href="/forgot-password">Forgot Password?</a></p>
-            <p>Don't have an account? <a href="./register.html">Sign up</a></p>
+            <p>Don't have an account? <a href="register.html">Sign up</a></p>
         </section>
     </div>
 </body>
